@@ -43,3 +43,6 @@ python predict_hybrid.py --data-dir Round2_Map --cache-dir cache `
 
 `outputs_final/Round2_Test_Channel_UPA.npy` 是默认候选；若线上反馈确认 PAS 是对扁平
 256 端口直接做 DFT，则改用 `Round2_Test_Channel_FLAT.npy`。
+
+全量训练配置、验证结果与产物哈希记录在 `training_summary.json`。竞赛 ZIP 体积约
+805 MB，因此通过 GitHub Release 发布，不纳入普通 Git 历史。

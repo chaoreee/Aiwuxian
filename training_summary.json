@@ -1,0 +1,27 @@
+{
+  "round": 2,
+  "trained_on_all_4000_points": true,
+  "checkpoint_epoch": 6,
+  "training": {
+    "epochs": 6,
+    "scheduler_tmax": 20,
+    "batch_size": 32,
+    "learning_rate": 0.0003,
+    "width": 256,
+    "fourier_levels": 6,
+    "pas_mode": "both",
+    "complex_weight": 0.5,
+    "seed": 20260811
+  },
+  "validation": {
+    "protocol": "12 connected spatial holes with test-like nearest-neighbor distances",
+    "upa_hybrid_score": 0.5912847545,
+    "flat_hybrid_score": 0.5931650556
+  },
+  "selected_submission": "UPA",
+  "sha256": {
+    "checkpoint_best_pt": "af6d428f793f663c319bba696150a055b227da56a43001402aeca038f9ee9a3d",
+    "upa_channel_npy": "94b19456aaf92e2665b15ab49f0ef4e8afb6deb2fbd4da0d98cfd309b3eb88b8",
+    "flat_channel_npy": "1291b9afad8c9603ff30661c2b68f0997f6bc02b1c4ba3dfe41e96ccde6bb05d"
+  }
+}

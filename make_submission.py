@@ -7,16 +7,21 @@ from pathlib import Path
 
 SOURCE_FILES = (
     "README.md",
+    "requirements.txt",
     "prepare_cache.py",
     "train.py",
     "predict.py",
     "predict_hybrid.py",
+    "evaluate.py",
+    "evaluate_baselines.py",
+    "evaluate_hybrid.py",
     "src/__init__.py",
     "src/data.py",
     "src/losses.py",
     "src/metrics.py",
     "src/model.py",
     "src/splits.py",
+    "training_summary.json",
 )
 
 
