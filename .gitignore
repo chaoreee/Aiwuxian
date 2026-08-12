@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.venv/
+venv/
+
+# Competition data and documents (large or redistribution-restricted)
+Round2_Map/
+Problem-Round2.pdf
+Problem-Round2_md/
+*.npy
+*.npz
+
+# Derived artifacts
+cache/
+outputs/
+outputs_*/
+submissions/
+*.zip
+
+# IDE / OS
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
