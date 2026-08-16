@@ -18,6 +18,7 @@ cache/
 outputs/
 outputs_*/
 submissions/
+tmp/
 *.zip
 
 # IDE / OS

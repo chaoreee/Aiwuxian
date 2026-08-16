@@ -15,8 +15,13 @@ SOURCE_FILES = (
     "evaluate.py",
     "evaluate_baselines.py",
     "evaluate_hybrid.py",
+    "analyze_alignment.py",
+    "run_iteration.py",
+    "ITERATION_LOG.md",
     "src/__init__.py",
+    "src/alignment.py",
     "src/data.py",
+    "src/interpolation.py",
     "src/losses.py",
     "src/metrics.py",
     "src/model.py",
@@ -29,6 +34,7 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--channel", required=True)
     parser.add_argument("--checkpoint", default="outputs_final/best.pt")
+    parser.add_argument("--extra-checkpoint", action="append", default=[])
     parser.add_argument("--output", required=True)
     args = parser.parse_args()
 
@@ -36,7 +42,13 @@ def main() -> None:
     destination.parent.mkdir(parents=True, exist_ok=True)
     with zipfile.ZipFile(destination, "w", allowZip64=True) as zf:
         zf.write(args.channel, "Round2_Test_Channel.npy", compress_type=zipfile.ZIP_STORED)
-        zf.write(args.checkpoint, "outputs_final/best.pt", compress_type=zipfile.ZIP_STORED)
+        zf.write(args.checkpoint, "checkpoints/primary.pt", compress_type=zipfile.ZIP_STORED)
+        for index, checkpoint in enumerate(args.extra_checkpoint, start=1):
+            zf.write(
+                checkpoint,
+                f"checkpoints/extra_{index}.pt",
+                compress_type=zipfile.ZIP_STORED,
+            )
         for source in SOURCE_FILES:
             zf.write(source, source.replace("\\", "/"), compress_type=zipfile.ZIP_DEFLATED, compresslevel=9)
     print(f"created {destination} ({destination.stat().st_size} bytes)")

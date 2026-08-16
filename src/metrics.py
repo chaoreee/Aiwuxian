@@ -54,5 +54,51 @@ def channel_metrics(
     return float(upa_pas), float(flat_pas), float(pdp), float(squared_error)
 
 
+def channel_metrics_many(
+    target: np.ndarray,
+    predictions: np.ndarray,
+    m_p: int = 2,
+    m_h: int = 16,
+    m_v: int = 8,
+) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+    """Vectorized ``channel_metrics`` for predictions shaped [K, M, N, S]."""
+    target = np.asarray(target)
+    predictions = np.asarray(predictions)
+    if predictions.ndim != 4 or predictions.shape[1:] != target.shape:
+        raise ValueError(
+            f"expected predictions [K, {target.shape}], got {predictions.shape}"
+        )
+    n, s = target.shape[1:]
+
+    target_angle = fftn(target.reshape(m_p, m_h, m_v, n, s), axes=(1, 2), norm="ortho")
+    pred_angle = fftn(
+        predictions.reshape(-1, m_p, m_h, m_v, n, s), axes=(2, 3), norm="ortho"
+    )
+    target_pas = np.abs(target_angle).astype(np.float64) ** 2
+    pred_pas = np.abs(pred_angle).astype(np.float64) ** 2
+    upa_pas = _cosine(
+        target_pas.transpose(3, 4, 0, 1, 2).reshape(n, s, -1),
+        pred_pas.transpose(0, 4, 5, 1, 2, 3).reshape(len(predictions), n, s, -1),
+        axis=-1,
+    ).mean(axis=(1, 2))
+
+    target_flat = np.abs(fft(target, axis=0, norm="ortho")).astype(np.float64) ** 2
+    pred_flat = np.abs(fft(predictions, axis=1, norm="ortho")).astype(np.float64) ** 2
+    flat_pas = _cosine(target_flat[None, ...], pred_flat, axis=1).mean(axis=(1, 2))
+
+    target_delay = np.abs(ifft(target, axis=2, norm="ortho")).astype(np.float64) ** 2
+    pred_delay = np.abs(ifft(predictions, axis=3, norm="ortho")).astype(np.float64) ** 2
+    pdp = _cosine(target_delay[None, ...], pred_delay, axis=3).mean(axis=(1, 2))
+    squared_error = np.sum(
+        np.abs(
+            predictions.astype(np.complex128) - target.astype(np.complex128)[None, ...]
+        )
+        ** 2,
+        axis=(1, 2, 3),
+        dtype=np.float64,
+    )
+    return upa_pas, flat_pas, pdp, squared_error
+
+
 def competition_score(pas: float, pdp: float, nmse: float) -> float:
     return 0.4 * pas + 0.4 * pdp + 0.2 / (1.0 + nmse)

@@ -1,27 +1,74 @@
 {
   "round": 2,
   "trained_on_all_4000_points": true,
-  "checkpoint_epoch": 6,
-  "training": {
-    "epochs": 6,
-    "scheduler_tmax": 20,
-    "batch_size": 32,
-    "learning_rate": 0.0003,
-    "width": 256,
-    "fourier_levels": 6,
-    "pas_mode": "both",
-    "complex_weight": 0.5,
-    "seed": 20260811
-  },
   "validation": {
-    "protocol": "12 connected spatial holes with test-like nearest-neighbor distances",
-    "upa_hybrid_score": 0.5912847545,
-    "flat_hybrid_score": 0.5931650556
+    "protocol": "12 connected spatial holes, 360 points, test-like neighbor distances",
+    "starting_upa_score": 0.5912847545,
+    "selected_upa_pas": 0.5642755945,
+    "selected_pdp": 0.7322723337,
+    "selected_calibrated_nmse": 0.9999724338,
+    "selected_upa_score": 0.6186205496,
+    "absolute_local_gain": 0.0273357951
   },
-  "selected_submission": "UPA",
-  "sha256": {
-    "checkpoint_best_pt": "af6d428f793f663c319bba696150a055b227da56a43001402aeca038f9ee9a3d",
-    "upa_channel_npy": "94b19456aaf92e2665b15ab49f0ef4e8afb6deb2fbd4da0d98cfd309b3eb88b8",
-    "flat_channel_npy": "1291b9afad8c9603ff30661c2b68f0997f6bc02b1c4ba3dfe41e96ccde6bb05d"
+  "platform": {
+    "starting_score": 0.61,
+    "optimized_score": null,
+    "note": "optimized ZIP has not yet been uploaded to the competition platform"
+  },
+  "selected_configuration": {
+    "pas_layout": "upa",
+    "neighbor_policy": "nonzero",
+    "neighbors": 64,
+    "distance_power": 2.0,
+    "alpha_ai": 0.4,
+    "alpha_neighbors": 0.6,
+    "projection_iterations": 16,
+    "final_angle_constraint": true,
+    "zero_mask_points": 8,
+    "calibration_real": 0.012331678067696007,
+    "calibration_imag": -0.02334731327474849
+  },
+  "models": {
+    "angle_primary": {
+      "path": "outputs_l4_upa_full/best.pt",
+      "fourier_levels": 4,
+      "epochs": 12,
+      "pas_mode": "upa",
+      "complex_weight": 0.2,
+      "sha256": "5070d098a8283505ef5b27ee597de2243f94945805ebee96fc3a5104d50939af"
+    },
+    "angle_ensemble": {
+      "path": "outputs_l3_upa_full/best.pt",
+      "fourier_levels": 3,
+      "epochs": 9,
+      "pas_mode": "upa",
+      "complex_weight": 0.2,
+      "sha256": "548d9c2503e47cec7b24f731ba7865e9021b179b9097cc55d071eb41cfc04762"
+    },
+    "delay": {
+      "path": "outputs_final/best.pt",
+      "fourier_levels": 6,
+      "epochs": 6,
+      "pas_mode": "both",
+      "complex_weight": 0.5,
+      "sha256": "af6d428f793f663c319bba696150a055b227da56a43001402aeca038f9ee9a3d"
+    }
+  },
+  "artifacts": {
+    "channel": {
+      "path": "outputs_optimized/Round2_Test_Channel.npy",
+      "bytes": 786432128,
+      "shape": [500, 256, 4, 192],
+      "dtype": "complex64",
+      "sha256": "77fa6c544193572f12759ea158a87be27e30b4d7b9e6f2073c3e24f29025621a"
+    },
+    "zip": {
+      "path": "submissions/Round2_optimized_submission.zip",
+      "bytes": null,
+      "entries": 25,
+      "crc_ok": true,
+      "sha256": null,
+      "note": "ZIP byte size and SHA-256 are computed after packaging to avoid a self-referential manifest"
+    }
   }
 }
